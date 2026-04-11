@@ -63,6 +63,7 @@
                         </div>
 
                         {{-- User --}}
+                        @if(auth()->user()->role === 'admin')
                         <div>
                             <label for="user_id" class="block text-sm font-medium text-gray-700 mb-1">
                                 Owner <span class="text-red-500">*</span>
@@ -80,6 +81,7 @@
                                 <p class="mt-1.5 text-xs text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
+                        @endif
 
                         {{-- Actions --}}
                         <div class="flex items-center justify-end gap-3 pt-2">

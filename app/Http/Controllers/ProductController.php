@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Exports\ProductExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -21,8 +23,12 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'qty' => 'required|integer',
             'price' => 'required|numeric',
-            'user_id' => 'required|exists:users,id',
+            'user_id' => auth()->user()->role === 'admin' ? 'required|exists:users,id' : 'nullable',
         ]);
+
+        if (auth()->user()->role !== 'admin') {
+            $validated['user_id'] = auth()->id();
+        }
 
         $product = Product::create($validated);
 
@@ -52,8 +58,12 @@ class ProductController extends Controller
             'name' => 'sometimes|string|max:255',
             'qty' => 'sometimes|integer',
             'price' => 'sometimes|numeric',
-            'user_id' => 'sometimes|exists:users,id',
+            'user_id' => auth()->user()->role === 'admin' ? 'sometimes|exists:users,id' : 'nullable',
         ]);
+
+        if (auth()->user()->role !== 'admin') {
+            unset($validated['user_id']); // User cannot change ownership
+        }
 
         $product->update($validated);
 
@@ -76,5 +86,12 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('product.index')->with('success', 'Product berhasil dihapus');
+    }
+
+    public function export()
+    {
+        \Illuminate\Support\Facades\Gate::authorize('export-product');
+        
+        return Excel::download(new ProductExport, 'products.xlsx');
     }
 }
