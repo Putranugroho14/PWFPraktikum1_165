@@ -65,14 +65,14 @@
                             </div>
                         </div>
 
-                        {{-- Quantity --}}
+                        {{-- Qty --}}
                         <div class="flex items-center px-5 py-4">
-                            <div class="w-32 shrink-0 text-sm text-gray-500">Quantity</div>
+                            <div class="w-32 shrink-0 text-sm text-gray-500">Qty</div>
                             <span>
                                 <span
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                    {{ $product->quantity > 10 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                    {{ $product->quantity }} {{ $product->quantity > 10 ? 'In Stock' : 'Low Stock' }}
+                                    {{ $product->qty > 10 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                    {{ $product->qty }} {{ $product->qty > 10 ? 'In Stock' : 'Low Stock' }}
                                 </span>
                             </span>
                         </div>

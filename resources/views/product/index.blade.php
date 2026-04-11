@@ -78,8 +78,8 @@
                                         <td class="px-6 py-4 text-gray-600">
                                             <span
                                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                                {{ $product->quantity > 10 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                                {{ $product->quantity }}
+                                                {{ $product->qty > 10 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                {{ $product->qty }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 text-gray-700 font-mono">
