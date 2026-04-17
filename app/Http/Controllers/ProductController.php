@@ -6,6 +6,9 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Exports\ProductExport;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Database\QueryException;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
@@ -17,22 +20,39 @@ class ProductController extends Controller
         return view('product.index', compact('products'));
     }
 
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'qty' => 'required|integer',
-            'price' => 'required|numeric',
-            'user_id' => auth()->user()->role === 'admin' ? 'required|exists:users,id' : 'nullable',
-        ]);
+        $validated = $request->validated();
 
         if (auth()->user()->role !== 'admin') {
             $validated['user_id'] = auth()->id();
         }
 
-        $product = Product::create($validated);
+        try {
+            Product::create($validated);
 
-        return redirect()->route('product.index')->with('success', 'Product created successfully.');
+            return redirect()
+                ->route('product.index')
+                ->with('success', 'Product created successfully.');
+        } catch (QueryException $e) {
+            \Illuminate\Support\Facades\Log::error('Product store database error', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Database error while creating product.');
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Product store unexpected error', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Unexpected error occurred.');
+        }
     }
 
     public function create()
@@ -42,32 +62,44 @@ class ProductController extends Controller
         return view('product.create', compact('users'));
     }
 
-    public function show($id)
+    public function show(Product $product)
     {
-        $product = Product::findOrFail($id);
-
         return view('product.view', compact('product'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        $product = Product::findOrFail($id);
         \Illuminate\Support\Facades\Gate::authorize('update', $product);
 
-        $validated = $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'qty' => 'sometimes|integer',
-            'price' => 'sometimes|numeric',
-            'user_id' => auth()->user()->role === 'admin' ? 'sometimes|exists:users,id' : 'nullable',
-        ]);
+        $validated = $request->validated();
 
         if (auth()->user()->role !== 'admin') {
             unset($validated['user_id']); // User cannot change ownership
         }
 
-        $product->update($validated);
+        try {
+            $product->update($validated);
 
-        return redirect()->route('product.index')->with('success', 'Product updated successfully.');
+            return redirect()->route('product.index')->with('success', 'Product updated successfully.');
+        } catch (QueryException $e) {
+            \Illuminate\Support\Facades\Log::error('Product update database error', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Database error while updating product.');
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Product update unexpected error', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Unexpected error occurred.');
+        }
     }
 
     public function edit(Product $product)
@@ -79,9 +111,8 @@ class ProductController extends Controller
         return view('product.edit', compact('product', 'users'));
     }
 
-    public function delete($id)
+    public function delete(Product $product)
     {
-        $product = Product::findOrFail($id);
         \Illuminate\Support\Facades\Gate::authorize('delete', $product);
         $product->delete();
 

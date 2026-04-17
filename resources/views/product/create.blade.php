@@ -21,6 +21,13 @@
                     <form action="{{ route('product.store') }}" method="POST" class="space-y-5">
                         @csrf
 
+                        {{-- Error Flash --}}
+                        @if (session('error'))
+                            <div class="px-4 py-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
                         {{-- Name --}}
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
