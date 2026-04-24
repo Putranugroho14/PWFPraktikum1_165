@@ -22,7 +22,7 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'     => 'required|string|min:3|max:255|unique:products,name',
+            'name'     => 'required|string|min:5|max:255|unique:products,name',
             'qty'      => 'required|integer|min:0',
             'price'    => 'required|numeric|min:0',
             'user_id'  => auth()->user()->role === 'admin' ? 'required|exists:users,id' : 'nullable',
@@ -33,7 +33,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name.required'  => 'Nama produk wajib diisi.',
-            'name.min'       => 'Nama produk minimal harus 3 karakter.',
+            'name.min'       => 'Nama produk minimal harus 5 karakter.',
             'name.max'       => 'Nama produk tidak boleh lebih dari 255 karakter.',
             'name.unique'    => 'Nama produk sudah digunakan, silakan gunakan nama lain.',
 
