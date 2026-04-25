@@ -26,6 +26,7 @@ class StoreProductRequest extends FormRequest
             'qty'      => 'required|integer|min:0',
             'price'    => 'required|numeric|min:0',
             'user_id'  => auth()->user()->role === 'admin' ? 'required|exists:users,id' : 'nullable',
+            'category_id' => 'required|exists:category,id',
         ];
     }
 

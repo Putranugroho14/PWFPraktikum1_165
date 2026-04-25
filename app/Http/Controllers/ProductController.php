@@ -58,8 +58,9 @@ class ProductController extends Controller
     public function create()
     {
         $users = User::orderBy('name')->get();
+        $categories = \App\Models\Category::orderBy('name')->get();
 
-        return view('product.create', compact('users'));
+        return view('product.create', compact('users', 'categories'));
     }
 
     public function show(Product $product)
@@ -107,8 +108,9 @@ class ProductController extends Controller
         \Illuminate\Support\Facades\Gate::authorize('update', $product);
 
         $users = User::orderBy('name')->get();
+        $categories = \App\Models\Category::orderBy('name')->get();
 
-        return view('product.edit', compact('product', 'users'));
+        return view('product.edit', compact('product', 'users', 'categories'));
     }
 
     public function delete(Product $product)

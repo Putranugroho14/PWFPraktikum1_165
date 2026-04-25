@@ -29,6 +29,7 @@ class UpdateProductRequest extends FormRequest
             'qty'     => 'sometimes|required|integer|min:0',
             'price'   => 'sometimes|required|numeric|min:0',
             'user_id' => auth()->user()->role === 'admin' ? 'sometimes|required|exists:users,id' : 'nullable',
+            'category_id' => 'sometimes|required|exists:category,id',
         ];
     }
 

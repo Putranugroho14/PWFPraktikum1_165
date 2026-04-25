@@ -32,6 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/product/delete/{product}', [ProductController::class, 'delete'])->name('product.delete');
     Route::get('/export-product', [ProductController::class, 'export'])->name('product.export')->middleware('can:export-product');
 
+    // Category Page
+    Route::resource('category', \App\Http\Controllers\CategoryController::class);
+
     // About Page
     Route::get('/about', function () {
         return view('about');
