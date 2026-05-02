@@ -1,10 +1,11 @@
 Category
 
 GET
-<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/10a6b594-dd4d-45ed-ae63-68e77e1d7a45" />
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/cab09d62-639d-4f65-b23d-5c77f2ff5cd4" />
 POST
-<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/0abbbab3-e700-45f9-8f5f-89ce318f86e3" />
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/66afbe97-c158-469f-8fd4-a30de389b344" />
 PUT
-<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/628af92f-4c66-4c41-a1b4-948770ba3bb6" />
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/8426cb1b-028b-4147-bf5d-3c624294f382" />
 DELETE
-<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/ece9ba3b-2ba7-49b6-9468-21366c9190ad" />
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/5c3c6367-d71c-4917-9050-b8c49a07623b" />
+
